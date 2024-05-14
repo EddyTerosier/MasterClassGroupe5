@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Header from "./Header"
+import Login from "./Login";
+import React, { useState } from 'react';
 
-function App() {
+//import AdminDashboard from "./AdminDashboard"
+//<Route path="Admin" element={<AdminDashboard />} />
+
+export default function App() {
+const [log, setLog] = useState(false);
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+
+      <Route path='/' element={<Header />}>
+
+      <Route path="Login" element={<Login />} />
+
+      </Route>
+        </Routes>
+    </BrowserRouter>
+
   );
 }
 
-export default App;
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);

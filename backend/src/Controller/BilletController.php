@@ -11,20 +11,23 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Entity\Evenement;
+use App\Entity\User;
+
+//use Symfony\Component\Security\Core\Security; // Importez la classe Security
 
 #[Route("/api/billet")]
 class BilletController extends AbstractController
 {
     private $entityManager;
     private $validator;
+    private $security; // Ajoutez une propriété pour le service Security
 
-    public function __construct(EntityManagerInterface $entityManager, ValidatorInterface $validator,/*Security $security*/)
+    public function __construct(EntityManagerInterface $entityManager, ValidatorInterface $validator)/*Security $security)*/ // Ajoutez Security à la liste des dépendances injectées
     {
         $this->entityManager = $entityManager;
         $this->validator = $validator;
-        //$this->security = $security;
+        //$this->security = $security; // Initialisez la propriété $security
     }
-
     #[Route('/', name: 'billet_index', methods: ['GET'])]
     public function index(): JsonResponse
     {
@@ -33,11 +36,7 @@ class BilletController extends AbstractController
 
         return $this->json($billets, Response::HTTP_OK, [], ['groups' => 'billet']);
     }
-    #[Route('/{id}', name: 'billet_show', methods: ['GET'])]
-    public function show(Billet $billet): JsonResponse
-    {
-        return $this->json($billet, Response::HTTP_OK, [], ['groups' => 'billet']);
-    }
+    
 
     #[Route('/create', name: 'billet_create', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $entityManager): JsonResponse
@@ -48,14 +47,17 @@ class BilletController extends AbstractController
         
         $evenementId = $data['evenement_id_id'] ?? null;
         $evenement = $entityManager->getRepository(Evenement::class)->find($evenementId);
+        $utilisateurId = $data['utilisateur_id_id'] ?? null;
+        $utilisateur = $entityManager->getRepository(User::class)->find($utilisateurId);
 
         
         if (!$evenement) {
             return $this->json(['error' => 'L\'événement spécifié n\'existe pas'], Response::HTTP_BAD_REQUEST);
         }
+        //$user = $this->security->getUser();
 
         $billet->setEvenementId($evenement); // Définit l'objet Evenement sur le billet
-        $billet->setUtilisateurId($data['utilisateur_id_id'] ?? null);
+        $billet->setUtilisateurId($utilisateur);
         $billet->setQuantite($data['quantite'] ?? null);
         $billet->setDateAchat(new \DateTime());
 
@@ -80,6 +82,8 @@ class BilletController extends AbstractController
     public function update(Request $request, Billet $billet): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+
+        $billet->setQuantite($data['quantite'] ?? $billet->getQuantite());
 
         $this->entityManager->flush();
 

@@ -2,7 +2,10 @@
 
 import React, { useState } from 'react';
 import './Login.css'; // Assurez-vous d'avoir un fichier LoginForm.css pour les styles
-// import axios from 'axios';
+import axios from 'axios';
+
+
+
 
 function InscriptionForm() {
   const [username, setUsername] = useState('');
@@ -12,26 +15,26 @@ function InscriptionForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // try {
-    //   // Effectuer la requête Axios vers votre API de connexion
-    //   const response = await axios.post('votre-url-de-connexion', {
-    //     username: username,
-    //     password: password
-    //   });
+    try {
+      // Effectuer la requête Axios vers votre API de connexion
+      const response = await axios.post('http://localhost:8000/signup', {
+        email: username,
+        password: password
+      });
 
-    //   // Vérifier la réponse de l'API et effectuer la redirection si la connexion est réussie
-    //   if (response.status === 200) {
-    //     // Redirection vers une page de succès ou autre
-    //     window.location.href = '/accueil';
-    //   } else {
-    //     // Afficher un message d'erreur si la réponse de l'API indique un problème de connexion
-    //     setError('Identifiants incorrects. Veuillez réessayer.');
-    //   }
-    // } catch (error) {
-    //   // Gérer les erreurs éventuelles de la requête Axios
-    //   setError('Une erreur s\'est produite. Veuillez réessayer plus tard.');
-    //   console.error('Erreur lors de la connexion :', error);
-    // }
+      // Vérifier la réponse de l'API et effectuer la redirection si la connexion est réussie
+      if (response.status === 201) {
+        // Redirection vers une page de succès ou autre
+        window.location.href = '/Accueil';
+      } else {
+        // Afficher un message d'erreur si la réponse de l'API indique un problème de connexion
+        setError('Identifiants incorrects. Veuillez réessayer.');
+      }
+    } catch (error) {
+      // Gérer les erreurs éventuelles de la requête Axios
+      setError('Une erreur s\'est produite. Veuillez réessayer plus tard.');
+      console.error('Erreur lors de la connexion :', error);
+    }
   };
 
   return (

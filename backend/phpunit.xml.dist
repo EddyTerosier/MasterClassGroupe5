@@ -6,7 +6,6 @@
          backupGlobals="false"
          colors="true"
          bootstrap="tests/bootstrap.php"
-
 >
     <php>
         <ini name="display_errors" value="1" />
@@ -19,11 +18,10 @@
 
     <testsuites>
         <testsuite name="Project Test Suite">
-            <directory>tests</directory>
+            <directory>tests/Unit</directory>
         </testsuite>
     </testsuites>
-
-
+  
     <extensions>
     </extensions>
 </phpunit>

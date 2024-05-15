@@ -1,181 +1,133 @@
 /* Style de base */
-
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  a {
-    text-decoration: none;
-    color: #007bff;
-  }
-  
-  /* Style de la barre de navigation */
-  
-  header {
-    background-color: #007bff;
-    color: #fff;
-    padding: 20px;
-  }
-  
-  nav ul {
-    display: flex;
-  }
-  
-  nav ul li {
-    margin-right: 20px;
-  }
-  
-  nav ul li:last-child {
-    margin-right: 0;
-  }
-  
-  nav ul li a {
-    color: #fff;
-  }
-  
-  /* Style des sections */
-  
-  main {
-    padding: 20px;
-  }
-  
-  .evenements {
-    margin-bottom: 40px;
-  }
-  
-  .evenements h2 {
-    color: #007bff;
-  }
-  
-  .evenements ul {
-    padding: 0;
-  }
-  
-  .evenements li {
-    border-bottom: 1px solid #ddd;
-    padding: 20px 0;
-  }
-  
-  .evenements li:last-child {
-    border-bottom: none;
-  }
-  
-  .evenements li h3 {
-    margin-top: 0;
-  }
-  
-  /* Style du pied de page */
-  
-  footer {
-    background-color: #f8f9fa;
-    padding: 20px;
-    text-align: center;
-  }
-  
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
 
-  /* Style des cartes d'événement */
-.carte-evenement {
-    display: flex;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 20px;
-  }
-  
-  .carte-evenement img {
-    width: 200px;
-    height: auto;
-    border-radius: 5px 0 0 5px;
-  }
-  
-  .contenu-carte {
-    padding: 20px;
-  }
-  
-  .contenu-carte h3 {
-    margin-top: 0;
-  }
-  
-  .contenu-carte p {
-    margin-bottom: 10px;
-  }
-  
-  .contenu-carte a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .contenu-carte button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .contenu-carte button:hover {
-    background-color: #0056b3;
-  }
+ul {
+  list-style-type: none;
+  padding: 0;
+}
 
-  /* Style des cartes d'événement */
-  .cartes-evenement {
-    display: flex;
-    gap: 25px;
-    flex-wrap: wrap;
+a {
+  text-decoration: none;
+  color: #007bff;
+}
 
-  }
+/* Style de la barre de navigation */
+header {
+  background-color: #007bff;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
 
+nav ul {
+  display: flex;
+}
+
+nav ul li {
+  margin-right: 20px;
+}
+
+nav ul li:last-child {
+  margin-right: 0;
+}
+
+nav ul li a {
+  color: #fff;
+}
+
+/* Style des sections */
+main {
+  padding: 20px;
+}
+
+.evenements {
+  margin-bottom: 40px;
+}
+
+.evenements h2 {
+  color: #007bff;
+}
+
+.evenements ul {
+  padding: 0;
+}
+
+.evenements li {
+  border-bottom: 1px solid #ddd;
+  padding: 20px 0;
+}
+
+.evenements li:last-child {
+  border-bottom: none;
+}
+
+.evenements li h3 {
+  margin-top: 0;
+}
+
+/* Style du pied de page */
+footer {
+  background-color: #f8f9fa;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Style des cartes d'événement */
+.cartes-evenement {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+}
 
 .carte-evenement {
-    display: flex;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    width: 450px;
-  }
-  
-  .carte-evenement img {
-    width: 200px;
-    height: auto;
-    border-radius: 5px 0 0 5px;
-    object-fit: cover; /* Pour ajuster l'image dans son conteneur */
-  }
-  
-  .contenu-carte {
-    flex-grow: 1; /* Pour que le contenu prenne l'espace restant */
-    padding: 20px;
-  }
-  
-  .contenu-carte h3 {
-    margin-top: 0;
-  }
-  
-  .contenu-carte p {
-    margin-bottom: 10px;
-  }
-  
-  .contenu-carte a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .contenu-carte button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .contenu-carte button:hover {
-    background-color: #0056b3;
-  }
-  
+  display: flex;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  width: 100%; /* Modifier la largeur pour s'adapter à la taille de l'écran */
+  max-width: 450px; /* Limiter la largeur maximale */
+}
+
+.carte-evenement img {
+  width: 200px;
+  height: auto;
+  border-radius: 5px 0 0 5px;
+  object-fit: cover; /* Pour ajuster l'image dans son conteneur */
+}
+
+.contenu-carte {
+  flex-grow: 1; /* Pour que le contenu prenne l'espace restant */
+  padding: 20px;
+}
+
+.contenu-carte h3 {
+  margin-top: 0;
+}
+
+.contenu-carte p {
+  margin-bottom: 10px;
+}
+
+.contenu-carte a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.contenu-carte button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%; /* Utiliser la largeur maximale disponible */
+  margin-top: 10px; /* Espacement du bouton par rapport aux autres éléments */
+}
+
+.contenu-carte button:hover {
+  background-color: #0056b3;
+}

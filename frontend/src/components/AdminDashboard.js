@@ -19,9 +19,7 @@ function AdminDashboard() {
                     <li className="nav-item">
                         <Link className="nav-link" to="/admin/events">Gestion des Événements</Link>
                     </li>
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/admin/tickets">Gestion des Billets</Link>
-                    </li>
+                  
                 </ul>
             </nav>
             <Routes>

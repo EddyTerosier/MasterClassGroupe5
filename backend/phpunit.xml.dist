@@ -6,7 +6,6 @@
          backupGlobals="false"
          colors="true"
          bootstrap="tests/bootstrap.php"
-         
 >
     <php>
         <ini name="display_errors" value="1" />
@@ -22,7 +21,6 @@
             <directory>tests/Unit</directory>
         </testsuite>
     </testsuites>
-
   
     <extensions>
     </extensions>

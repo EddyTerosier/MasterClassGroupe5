@@ -4,8 +4,9 @@ import Header from "./Header"
 import Login from "./Login";
 import React, { useState } from 'react';
 
-//import AdminDashboard from "./AdminDashboard"
-//<Route path="Admin" element={<AdminDashboard />} />
+import AdminDashboard from "./components/AdminDashboard"
+import PageAccueil from "./components/pageaccueil";
+import InscriptionForm from "./Inscription";
 
 export default function App() {
 const [log, setLog] = useState(false);
@@ -17,7 +18,11 @@ const [log, setLog] = useState(false);
 
       <Route path='/' element={<Header />}>
 
+      <Route path="Admin/*" element={<AdminDashboard />} />
+      <Route path="Accueil" element={<PageAccueil />} />
       <Route path="Login" element={<Login />} />
+      <Route path="Inscription" element={<InscriptionForm />} />
+
 
       </Route>
         </Routes>

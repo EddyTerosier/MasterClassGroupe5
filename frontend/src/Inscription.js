@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import './Login.css'; // Assurez-vous d'avoir un fichier LoginForm.css pour les styles
 // import axios from 'axios';
 
-function LoginForm() {
+function InscriptionForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -37,7 +37,7 @@ function LoginForm() {
   return (
     <div className="login-container">
              
-             <label className='title'>Bienvenue</label>
+             <label className='title'>Veuiller vous inscrire</label>
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -60,10 +60,10 @@ function LoginForm() {
             required
           />
         </div>
-        <button type="submit">Se connecter</button>
+        <button type="submit">Inscription</button>
       </form>
     </div>
   );
 }
 
-export default LoginForm;
+export default InscriptionForm;

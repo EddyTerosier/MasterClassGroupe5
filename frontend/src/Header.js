@@ -20,13 +20,14 @@ const Layout = () => {
     <>
     
   
+    <nav className="header-nav">
+    <a href="/Accueil">Accueil</a>
+    <a href="/Login">{log}</a>
+    <a href="/Inscription">Inscription</a>
+    <a href="/Admin">Page Admin</a>
 
-<nav>
-	  <a href="/">Accueil</a>
-      <a href="/Login">{log}</a>
-	<div class="animation start-home"></div>
+    <div className="animation start-home"></div>
 </nav>
-
 
 
       <Outlet />

@@ -1,4 +1,3 @@
-// src/components/Users.js
 import React, { useState, useEffect } from 'react';
 import UserForm from './UserForm';
 
@@ -7,22 +6,19 @@ function Users() {
     const [selectedUserId, setSelectedUserId] = useState(null);
 
     useEffect(() => {
-        // Remplacer par la route vers l'API
-        fetch('/api/users')
+        fetch('http://localhost:8000/users')
             .then(response => response.json())
             .then(data => setUsers(data));
     }, []);
 
     const handleDelete = (id) => {
-        // Remplacer par la route vers l'API
-        fetch(`/api/users/${id}`, { method: 'DELETE' })
+        fetch(`http://localhost:8000/users/${id}`, { method: 'DELETE' })
             .then(() => setUsers(users.filter(user => user.id !== id)));
     };
 
     const handleSave = (user) => {
         setSelectedUserId(null);
-        // Sert à réactualiser la liste des utilisateurs
-        fetch('/api/users')
+        fetch('http://localhost:8000/users')
             .then(response => response.json())
             .then(data => setUsers(data));
     };
@@ -35,6 +31,7 @@ function Users() {
                 <tr>
                     <th>ID</th>
                     <th>Email</th>
+                    <th>Rôles</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -43,9 +40,10 @@ function Users() {
                     <tr key={user.id}>
                         <td>{user.id}</td>
                         <td>{user.email}</td>
+                        <td>{user.roles.join(', ')}</td>
                         <td>
-                            <button className="btn btn-danger btn-sm" onClick={() => handleDelete(user.id)}>Supprimer</button>
-                            <button className="btn btn-primary btn-sm" onClick={() => setSelectedUserId(user.id)}>Modifier</button>
+                            <a className="btn btn-danger mx-2" onClick={() => handleDelete(user.id)}>Supprimer</a>
+                            <a className="btn btn-primary" onClick={() => setSelectedUserId(user.id)}>Modifier</a>
                         </td>
                     </tr>
                 ))}

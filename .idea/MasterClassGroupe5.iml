@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/backend/tests" isTestSource="true" packagePrefix="App\Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/backend/tests/Unit" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/doctrine/cache" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/doctrine/collections" />
@@ -102,6 +103,22 @@
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/masterminds/html5" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/browser-kit" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/dom-crawler" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/guzzlehttp/guzzle" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/guzzlehttp/promises" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/guzzlehttp/psr7" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/nelmio/cors-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/phpdocumentor/reflection-common" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/phpdocumentor/reflection-docblock" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/phpdocumentor/type-resolver" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/phpstan/phpdoc-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/psr/http-client" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/psr/http-factory" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/psr/http-message" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/ralouphie/getallheaders" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/debug-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/serializer" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/validator" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/webmozart/assert" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

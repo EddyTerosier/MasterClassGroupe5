@@ -31,6 +31,7 @@ class EvenementController extends AbstractController
 
         return $this->json($evenements, Response::HTTP_OK, [], ['groups' => 'evenement']);
     }
+
     #[Route('/{id}', name: 'evenement_show', methods: ['GET'])]
     public function show(Evenement $evenement): JsonResponse
     {
@@ -41,7 +42,7 @@ class EvenementController extends AbstractController
     public function create(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-    
+
         $evenement = new Evenement();
         $evenement->setTitre($data['titre'] ?? null);
         $evenement->setDescription($data['description'] ?? null);
@@ -49,11 +50,11 @@ class EvenementController extends AbstractController
         $evenement->setPrix($data['prix'] ?? null);
         $evenement->setLieu($data['lieu'] ?? null);
         $evenement->setMaximum($data['maximum'] ?? null);
-        $evenement->setRaison($data['raison'] ?? null); 
-        $evenement->setAnnulation($data['annulation'] ?? null); 
-    
+        $evenement->setRaison($data['raison'] ?? null);
+        $evenement->setAnnulation($data['annulation'] ?? null);
+
         $errors = $this->validator->validate($evenement);
-    
+
         if (count($errors) > 0) {
             $errorMessages = [];
             foreach ($errors as $error) {
@@ -61,13 +62,13 @@ class EvenementController extends AbstractController
             }
             return $this->json(['errors' => $errorMessages], Response::HTTP_BAD_REQUEST);
         }
-        
+
         $this->entityManager->persist($evenement);
         $this->entityManager->flush();
-    
+
         return $this->json(['message' => 'Événement créé avec succès'], Response::HTTP_CREATED);
     }
-    
+
     #[Route('/{id}/update', name: 'evenement_update', methods: ['PUT'])]
     public function update(Request $request, Evenement $evenement): JsonResponse
     {
@@ -75,6 +76,24 @@ class EvenementController extends AbstractController
 
         $evenement->setTitre($data['titre'] ?? $evenement->getTitre());
         $evenement->setDescription($data['description'] ?? $evenement->getDescription());
+        $evenement->setDate(new \DateTime($data['date'] ?? $evenement->getDate()->format('Y-m-d H:i:s')));
+        $evenement->setPrix($data['prix'] ?? $evenement->getPrix());
+        $evenement->setLieu($data['lieu'] ?? $evenement->getLieu());
+        $evenement->setMaximum($data['maximum'] ?? $evenement->getMaximum());
+        $evenement->setRaison($data['raison'] ?? $evenement->getRaison());
+        $evenement->setAnnulation($data['annulation'] ?? $evenement->isAnnulation());
+
+        $this->entityManager->flush();
+
+        return $this->json($evenement, Response::HTTP_OK, [], ['groups' => 'evenement']);
+    }
+
+    #[Route('/{id}/annuler', name: 'evenement_annuler', methods: ['PUT'])]
+    public function annuler(Request $request, Evenement $evenement): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $evenement->setAnnulation(true);
+        $evenement->setRaison($data['reason'] ?? $evenement->getRaison());
 
         $this->entityManager->flush();
 

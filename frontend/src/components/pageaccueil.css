@@ -52,32 +52,7 @@ main {
   color: #007bff;
 }
 
-.evenements ul {
-  padding: 0;
-}
-
-.evenements li {
-  border-bottom: 1px solid #ddd;
-  padding: 20px 0;
-}
-
-.evenements li:last-child {
-  border-bottom: none;
-}
-
-.evenements li h3 {
-  margin-top: 0;
-}
-
-/* Style du pied de page */
-footer {
-  background-color: #f8f9fa;
-  padding: 20px;
-  text-align: center;
-}
-
-/* Style des cartes d'événement */
-.cartes-evenement {
+.evenements .cartes-evenement {
   display: flex;
   gap: 25px;
   flex-wrap: wrap;
@@ -85,22 +60,22 @@ footer {
 
 .carte-evenement {
   display: flex;
+  flex-direction: column;
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-bottom: 20px;
-  width: 100%; /* Modifier la largeur pour s'adapter à la taille de l'écran */
-  max-width: 450px; /* Limiter la largeur maximale */
+  width: 100%;
+  max-width: 450px;
 }
 
 .carte-evenement img {
-  width: 200px;
+  width: 100%;
   height: auto;
-  border-radius: 5px 0 0 5px;
-  object-fit: cover; /* Pour ajuster l'image dans son conteneur */
+  border-radius: 5px 5px 0 0;
+  object-fit: cover;
 }
 
 .contenu-carte {
-  flex-grow: 1; /* Pour que le contenu prenne l'espace restant */
   padding: 20px;
 }
 
@@ -124,10 +99,16 @@ footer {
   padding: 8px 16px;
   border-radius: 5px;
   cursor: pointer;
-  width: 100%; /* Utiliser la largeur maximale disponible */
-  margin-top: 10px; /* Espacement du bouton par rapport aux autres éléments */
+  width: 100%;
+  margin-top: 10px;
 }
 
 .contenu-carte button:hover {
   background-color: #0056b3;
+}
+
+.reservation {
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+  margin-top: 10px;
 }

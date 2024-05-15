@@ -1,28 +1,27 @@
-// src/components/UserForm.js
 import React, { useState, useEffect } from 'react';
 
 function UserForm({ userId, onSave }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [roles, setRoles] = useState('');
 
     useEffect(() => {
         if (userId) {
-            // Remplacer par la route vers l'API
-            fetch(`/api/users/${userId}`)
+            fetch(`http://localhost:8000/users/${userId}`)
                 .then(response => response.json())
                 .then(data => {
                     setEmail(data.email);
+                    setRoles(data.roles.join(', '));
                 });
         }
     }, [userId]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const payload = { email, password };
+        const payload = { email, password, roles: roles.split(',').map(role => role.trim()) };
         const method = userId ? 'PUT' : 'POST';
-        const url = userId ? `/api/users/${userId}` : '/api/users';
+        const url = userId ? `http://localhost:8000/users/${userId}` : 'http://localhost:8000/signup';
 
-        // Remplacer par la route vers l'API
         fetch(url, {
             method,
             headers: {
@@ -44,7 +43,11 @@ function UserForm({ userId, onSave }) {
             </div>
             <div className="mb-3 col-md-4">
                 <label htmlFor="password" className="form-label">Mot de passe</label>
-                <input id="password" type="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} required />
+                <input id="password" type="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} />
+            </div>
+            <div className="mb-3 col-md-4">
+                <label htmlFor="roles" className="form-label">Rôles</label>
+                <input id="roles" type="text" className="form-control" value={roles} onChange={e => setRoles(e.target.value)} />
             </div>
             <button type="submit" className="btn btn-primary mb-2">Enregistrer</button>
         </form>

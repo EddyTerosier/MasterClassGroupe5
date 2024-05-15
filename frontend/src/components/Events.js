@@ -1,4 +1,3 @@
-// src/components/Events.js
 import React, { useState, useEffect } from 'react';
 import EventForm from './EventForm';
 
@@ -10,30 +9,30 @@ function Events() {
     const [eventToCancel, setEventToCancel] = useState(null);
 
     useEffect(() => {
-        fetch('/api/events')
+        fetch('http://localhost:8000/api/evenement/')
             .then(response => response.json())
             .then(data => {
                 const eventsWithDates = data.map(event => ({
                     ...event,
-                    dates: event.dates || [],  // Assurez-vous que dates est toujours un tableau
+                    dates: event.date || [],
                 }));
                 setEvents(eventsWithDates);
             });
     }, []);
 
     const handleDelete = (id) => {
-        fetch(`/api/events/${id}`, { method: 'DELETE' })
+        fetch(`http://localhost:8000/api/evenement/${id}/delete`, { method: 'DELETE' })
             .then(() => setEvents(events.filter(event => event.id !== id)));
     };
 
     const handleSave = (event) => {
         setSelectedEventId(null);
-        fetch('/api/events')
+        fetch('http://localhost:8000/api/evenement')
             .then(response => response.json())
             .then(data => {
                 const eventsWithDates = data.map(event => ({
                     ...event,
-                    dates: event.dates || [],
+                    dates: event.date || [],
                 }));
                 setEvents(eventsWithDates);
             });
@@ -45,8 +44,8 @@ function Events() {
     };
 
     const submitCancelForm = () => {
-        fetch(`/api/events/${eventToCancel}/cancel`, {
-            method: 'POST',
+        fetch(`http://localhost:8000/api/evenement/${eventToCancel}/annuler`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -76,39 +75,48 @@ function Events() {
                 </tr>
                 </thead>
                 <tbody>
-                {events.map(event => (
-                    <tr key={event.id}>
-                        <td>{event.id}</td>
-                        <td>{event.title}</td>
-                        <td>{event.dates.join(', ')}</td>
-                        <td>{event.cancelled ? 'Oui' : 'Non'}</td>
-                        <td>{event.reason}</td>
-                        <td>
-                            <button className="btn btn-danger btn-sm" onClick={() => handleDelete(event.id)}>Supprimer</button>
-                            <button className="btn btn-primary btn-sm" onClick={() => setSelectedEventId(event.id)}>Modifier</button>
-                            <button className="btn btn-warning btn-sm" onClick={() => handleCancel(event.id)}>Annuler</button>
-                        </td>
-                    </tr>
-                ))}
+                {events.map(event => {
+                    const formattedDate = new Date(event.date).toLocaleDateString('fr-FR');
+                    return (
+                        <tr key={event.id}>
+                            <td>{event.id}</td>
+                            <td>{event.titre}</td>
+                            <td>{formattedDate}</td>
+                            <td>{event.annulation ? 'Oui' : 'Non'}</td>
+                            <td>{event.raison}</td>
+                            <td>
+                                <a className="btn btn-danger btn-sm" onClick={() => handleDelete(event.id)}>Supprimer</a>
+                                <a className="btn btn-primary btn-sm mx-2" onClick={() => setSelectedEventId(event.id)}>Modifier</a>
+                                <a className="btn btn-warning btn-sm" onClick={() => handleCancel(event.id)}>Annuler</a>
+                            </td>
+                        </tr>
+                    );
+                })}
                 </tbody>
             </table>
-            <h3 className="text-center">{selectedEventId ? 'Modifier' : 'Ajouter'} un Événement</h3>
-            <EventForm eventId={selectedEventId} onSave={handleSave} />
-            {showCancelForm && (
-                <div>
-                    <h4>Annuler l'Événement</h4>
-                    <div className="mb-3 col-md-4">
-                        <label htmlFor="cancelReason" className="form-label">Raison de l'annulation</label>
-                        <textarea
-                            id="cancelReason"
-                            className="form-control"
-                            value={cancelReason}
-                            onChange={e => setCancelReason(e.target.value)}
-                        />
-                    </div>
-                    <button className="btn btn-primary" onClick={submitCancelForm}>Annuler l'Événement</button>
+            <div className={"d-flex col-md-12 justify-content-center gap-4"}>
+                <div className={"col-md-8"}>
+                    <h3 className="text-center">{selectedEventId ? 'Modifier' : 'Ajouter'} un Événement</h3>
+                    <EventForm eventId={selectedEventId} onSave={handleSave} />
                 </div>
-            )}
+                <div className={"col-md-4"}>
+                    {showCancelForm && (
+                        <div className={"d-flex flex-column my-4"}>
+                            <h4>Annuler l'Événement</h4>
+                            <div className="mb-3">
+                                <label htmlFor="cancelReason" className="form-label">Raison de l'annulation</label>
+                                <textarea
+                                    id="cancelReason"
+                                    className="form-control"
+                                    value={cancelReason}
+                                    onChange={e => setCancelReason(e.target.value)}
+                                />
+                            </div>
+                            <a className="btn btn-primary" onClick={submitCancelForm}>Annuler l'Événement</a>
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }

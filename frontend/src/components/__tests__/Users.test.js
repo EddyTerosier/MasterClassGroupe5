@@ -1,54 +1,133 @@
 // src/components/__tests__/Users.test.js
 import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 import Users from '../Users';
 
-describe('Users Composant', () => {
-    test('Retourne une table avec les users et récupère les users', async () => {
-        // Fetch est simulé pour renvoyer une réponse JSON contenant une liste d'utilisateurs.
-        global.fetch = jest.fn(() =>
-            Promise.resolve({
-                json: () => Promise.resolve([{ id: 1, email: 'user@example.com' }]),
-            })
-        );
+// Mock the UserForm component
+jest.mock('../UserForm', () => ({ userId, onSave }) => (
+    <div data-testid="user-form">
+        <button onClick={() => onSave({ id: userId || 'new', email: 'test@example.com', roles: ['ROLE_USER'] })}>
+            {userId ? 'Update' : 'Add'} User
+        </button>
+    </div>
+));
 
-        await act(async () => {
-            render(<Users />);
-        });
-
-        // Vérifie que l'email de l'utilisateur est bien retourné.
-        expect(await screen.findByText('user@example.com')).toBeInTheDocument();
+describe('Users Component', () => {
+    beforeEach(() => {
+        // Reset the fetch mock before each test
+        global.fetch = jest.fn();
     });
 
-    test('supprime un user au clique du bouton', async () => {
-        global.fetch = jest.fn()
-            // Premier appel pour simuler le renvoie d'une liste contenant un utilisateur.
-            .mockImplementationOnce(() =>
-                Promise.resolve({
-                    json: () => Promise.resolve([{ id: 1, email: 'user@example.com' }]),
-                })
-            )
-            // Deuxième appel pour simuler le renvoie d'une liste vide après la suppression de l'utilisateur.
-            .mockImplementationOnce(() =>
-                Promise.resolve({
-                    json: () => Promise.resolve([]),
-                })
-            );
+    test('Récupère et affiche les utilisateurs', async () => {
+        // Mock fetch to return a list of users
+        global.fetch.mockResolvedValue({
+            json: jest.fn().mockResolvedValue([{ id: 1, email: 'user@example.com', roles: ['ROLE_USER'] }]),
+        });
 
-        // Retourne le composant en s'assurant que toutes les maj sont faites.
         await act(async () => {
             render(<Users />);
         });
 
         // Vérifie que l'email de l'utilisateur est bien retourné.
         expect(await screen.findByText('user@example.com')).toBeInTheDocument();
+        expect(await screen.findByText('ROLE_USER')).toBeInTheDocument();
+    });
 
-        // Simule un clic sur le bouton "Supprimer".
+    test('Supprime un utilisateur au clic du bouton', async () => {
+        global.fetch
+            .mockResolvedValueOnce({
+                json: jest.fn().mockResolvedValue([{ id: 1, email: 'user@example.com', roles: ['ROLE_USER'] }]),
+            })
+            .mockResolvedValueOnce({
+                json: jest.fn().mockResolvedValue([]),
+            })
+            .mockResolvedValueOnce({
+                ok: true,
+            });
+
+        await act(async () => {
+            render(<Users />);
+        });
+
+        expect(await screen.findByText('user@example.com')).toBeInTheDocument();
+        expect(await screen.findByText('ROLE_USER')).toBeInTheDocument();
+
         await act(async () => {
             fireEvent.click(screen.getByText('Supprimer'));
         });
 
-        // Vérifie que l'email de l'utilisateur n'est plus retourné dans le document.
         expect(screen.queryByText('user@example.com')).not.toBeInTheDocument();
+    });
+
+    test('Ouvre le formulaire pour ajouter un utilisateur', async () => {
+        global.fetch.mockResolvedValue({
+            json: jest.fn().mockResolvedValue([{ id: 1, email: 'user@example.com', roles: ['ROLE_USER'] }]),
+        });
+
+        await act(async () => {
+            render(<Users />);
+        });
+
+        fireEvent.click(screen.getByText('Ajouter un Utilisateur'));
+
+        expect(screen.getByTestId('user-form')).toBeInTheDocument();
+        expect(screen.getByText('Add User')).toBeInTheDocument();
+    });
+
+    test('Ouvre le formulaire pour modifier un utilisateur', async () => {
+        global.fetch.mockResolvedValue({
+            json: jest.fn().mockResolvedValue([{ id: 1, email: 'user@example.com', roles: ['ROLE_USER'] }]),
+        });
+
+        await act(async () => {
+            render(<Users />);
+        });
+
+        await waitFor(() => screen.getByText('user@example.com'));
+
+        fireEvent.click(screen.getByText('Modifier'));
+
+        expect(screen.getByTestId('user-form')).toBeInTheDocument();
+        expect(screen.getByText('Update User')).toBeInTheDocument();
+    });
+
+    test('Ajoute un nouvel utilisateur via le formulaire', async () => {
+        global.fetch
+            .mockResolvedValueOnce({
+                json: jest.fn().mockResolvedValue([{ id: 1, email: 'user@example.com', roles: ['ROLE_USER'] }]),
+            })
+            .mockResolvedValueOnce({
+                json: jest.fn().mockResolvedValue([{ id: 1, email: 'user@example.com', roles: ['ROLE_USER'] }, { id: 2, email: 'test@example.com', roles: ['ROLE_USER'] }]),
+            });
+
+        await act(async () => {
+            render(<Users />);
+        });
+
+        fireEvent.click(screen.getByText('Ajouter un Utilisateur'));
+        fireEvent.click(screen.getByText('Add User'));
+
+        expect(await screen.findByText('test@example.com')).toBeInTheDocument();
+    });
+
+    test('Met à jour un utilisateur via le formulaire', async () => {
+        global.fetch
+            .mockResolvedValueOnce({
+                json: jest.fn().mockResolvedValue([{ id: 1, email: 'user@example.com', roles: ['ROLE_USER'] }]),
+            })
+            .mockResolvedValueOnce({
+                json: jest.fn().mockResolvedValue([{ id: 1, email: 'updated@example.com', roles: ['ROLE_USER'] }]),
+            });
+
+        await act(async () => {
+            render(<Users />);
+        });
+
+        await waitFor(() => screen.getByText('user@example.com'));
+
+        fireEvent.click(screen.getByText('Modifier'));
+        fireEvent.click(screen.getByText('Update User'));
+
+        expect(await screen.findByText('updated@example.com')).toBeInTheDocument();
     });
 });

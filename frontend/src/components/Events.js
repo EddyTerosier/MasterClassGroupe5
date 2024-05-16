@@ -43,6 +43,19 @@ function Events() {
         setShowCancelForm(true);
     };
 
+    const handleUncancel = (id) => {
+        fetch(`http://localhost:8000/api/evenement/${id}/desannuler`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                setEvents(events.map(event => (event.id === id ? data : event)));
+            });
+    };
+
     const submitCancelForm = () => {
         fetch(`http://localhost:8000/api/evenement/${eventToCancel}/annuler`, {
             method: 'PUT',
@@ -85,9 +98,14 @@ function Events() {
                             <td>{event.annulation ? 'Oui' : 'Non'}</td>
                             <td>{event.raison}</td>
                             <td>
-                                <a className="btn btn-danger btn-sm" onClick={() => handleDelete(event.id)}>Supprimer</a>
-                                <a className="btn btn-primary btn-sm mx-2" onClick={() => setSelectedEventId(event.id)}>Modifier</a>
+                                <a className="btn btn-danger btn-sm"
+                                   onClick={() => handleDelete(event.id)}>Supprimer</a>
+                                <a className="btn btn-primary btn-sm mx-2"
+                                   onClick={() => setSelectedEventId(event.id)}>Modifier</a>
                                 <a className="btn btn-warning btn-sm" onClick={() => handleCancel(event.id)}>Annuler</a>
+                                {event.annulation && (
+                                    <a className="btn btn-success btn-sm mx-2" onClick={() => handleUncancel(event.id)}>Confirmer</a>
+                                )}
                             </td>
                         </tr>
                     );

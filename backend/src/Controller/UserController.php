@@ -28,17 +28,20 @@ class UserController extends AbstractController
 
         $email = $requestData['email'] ?? null;
         $password = $requestData['password'] ?? null;
+        $roles = $requestData['roles'] ?? [];
 
         if ($email === null || $password === null) {
             return $this->json(['error' => 'Les données email et password sont obligatoires.'], 400);
         }
 
+        if (empty($roles)) {
+            $roles = ['ROLE_USER'];
+        }
+
         $user = new User();
         $user->setEmail($email);
-
-        $user->setPassword($userPasswordHasher->hashPassword($user,$password));
-
-        $user->setRoles(['ROLE_USER']);
+        $user->setPassword($userPasswordHasher->hashPassword($user, $password));
+        $user->setRoles($roles);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -57,8 +60,8 @@ class UserController extends AbstractController
             $usersArray[] = [
                 'id' => $user->getId(),
                 'email' => $user->getEmail(),
+                'password' => $user->getPassword(),
                 'roles' => $user->getRoles(),
-                // Ajoutez d'autres champs si nécessaire
             ];
         }
 

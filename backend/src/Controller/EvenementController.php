@@ -100,6 +100,17 @@ class EvenementController extends AbstractController
         return $this->json($evenement, Response::HTTP_OK, [], ['groups' => 'evenement']);
     }
 
+    #[Route('/{id}/desannuler', name: 'evenement_desannuler', methods: ['PUT'])]
+    public function desannuler(Evenement $evenement): JsonResponse
+    {
+        $evenement->setAnnulation(false);
+        $evenement->setRaison(null);
+
+        $this->entityManager->flush();
+
+        return $this->json($evenement, Response::HTTP_OK, [], ['groups' => 'evenement']);
+    }
+
     #[Route('/{id}/delete', name: 'evenement_delete', methods: ['DELETE'])]
     public function delete(Evenement $evenement): JsonResponse
     {

@@ -1,6 +1,5 @@
-// src/components/__tests__/EventForm.test.js
 import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 import EventForm from '../EventForm';
 
 describe('EventForm Component', () => {
@@ -18,6 +17,7 @@ describe('EventForm Component', () => {
         expect(screen.getByLabelText(/Description/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/Lieu/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/Prix/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/Limite/i)).toBeInTheDocument();
 
         // Simule la saisie dans les champs de formulaire.
         fireEvent.change(screen.getByLabelText(/Titre/i), {
@@ -35,6 +35,9 @@ describe('EventForm Component', () => {
         fireEvent.change(screen.getByLabelText(/Prix/i), {
             target: { value: '50' },
         });
+        fireEvent.change(screen.getByLabelText(/Limite/i), {
+            target: { value: '100' },
+        });
 
         // Vérifie que les champs de saisie contiennent les valeurs correctes après la saisie.
         expect(screen.getByLabelText(/Titre/i).value).toBe('New Event');
@@ -42,6 +45,7 @@ describe('EventForm Component', () => {
         expect(screen.getByLabelText('Date 1').value).toBe('2023-01-01T10:00');
         expect(screen.getByLabelText(/Lieu/i).value).toBe('Event Location');
         expect(screen.getByLabelText(/Prix/i).value).toBe('50');
+        expect(screen.getByLabelText(/Limite/i).value).toBe('100');
     });
 
     test('Ajout et suppression de champs de date', async () => {
@@ -98,10 +102,13 @@ describe('EventForm Component', () => {
         fireEvent.change(screen.getByLabelText(/Prix/i), {
             target: { value: '50' },
         });
+        fireEvent.change(screen.getByLabelText(/Limite/i), {
+            target: { value: '100' },
+        });
 
         global.fetch.mockResolvedValueOnce({
             json: () => Promise.resolve({
-                id: 1, title: 'New Event', description: 'Event Description', dates: ['2023-01-01T10:00'], location: 'Event Location', price: '50', cancelled: false, reason: ''
+                id: 1, titre: 'New Event', description: 'Event Description', date: '2023-01-01T10:00', lieu: 'Event Location', prix: '50', maximum: '100', annulation: false, raison: ''
             }),
         });
 
@@ -111,20 +118,21 @@ describe('EventForm Component', () => {
 
         expect(handleSave).toHaveBeenCalledWith({
             id: 1,
-            title: 'New Event',
+            titre: 'New Event',
             description: 'Event Description',
-            dates: ['2023-01-01T10:00'],
-            location: 'Event Location',
-            price: '50',
-            cancelled: false,
-            reason: '',
+            date: '2023-01-01T10:00',
+            lieu: 'Event Location',
+            prix: '50',
+            maximum: '100',
+            annulation: false,
+            raison: '',
         });
     });
 
     test('Récupération et pré-remplissage des données lorsque eventId est fourni', async () => {
         global.fetch.mockResolvedValueOnce({
             json: () => Promise.resolve({
-                id: 1, title: 'Existing Event', description: 'Existing Description', dates: ['2023-01-01T10:00', '2023-01-02T10:00'], location: 'Existing Location', price: '100', cancelled: true, reason: 'Existing Reason'
+                id: 1, titre: 'Existing Event', description: 'Existing Description', date: '2023-01-01T10:00', lieu: 'Existing Location', prix: '100', maximum: '200', annulation: true, raison: 'Existing Reason'
             }),
         });
 
@@ -137,9 +145,10 @@ describe('EventForm Component', () => {
         expect(await screen.findByDisplayValue('Existing Event')).toBeInTheDocument();
         expect(screen.getByDisplayValue('Existing Description')).toBeInTheDocument();
         expect(screen.getByDisplayValue('2023-01-01T10:00')).toBeInTheDocument();
-        expect(screen.getByDisplayValue('2023-01-02T10:00')).toBeInTheDocument();
         expect(screen.getByDisplayValue('Existing Location')).toBeInTheDocument();
         expect(screen.getByDisplayValue('100')).toBeInTheDocument();
+        expect(screen.getByDisplayValue('200')).toBeInTheDocument();
         expect(screen.getByDisplayValue('Existing Reason')).toBeInTheDocument();
+        expect(screen.getByLabelText(/Annulé/i)).toBeChecked();
     });
 });

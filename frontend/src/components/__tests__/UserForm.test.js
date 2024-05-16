@@ -103,7 +103,7 @@ describe('UserForm Composant', () => {
                 id: user.id,
                 email: 'updateduser@example.com',
                 roles: ['ROLE_ADMIN'],
-                password: '' // Ensure the password field is included even if it's empty
+                password: ''
             });
         });
     });
@@ -115,7 +115,6 @@ describe('UserForm Composant', () => {
             render(<UserForm onSave={handleSave} />);
         });
 
-        // Do not change field values to test validation
         await act(async () => {
             fireEvent.submit(screen.getByText(/Enregistrer/i));
         });

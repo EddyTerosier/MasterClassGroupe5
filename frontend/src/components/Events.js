@@ -14,7 +14,7 @@ function Events() {
             .then(data => {
                 const eventsWithDates = data.map(event => ({
                     ...event,
-                    dates: event.date || [],
+                    date: event.date || '',
                 }));
                 setEvents(eventsWithDates);
             });
@@ -32,7 +32,7 @@ function Events() {
             .then(data => {
                 const eventsWithDates = data.map(event => ({
                     ...event,
-                    dates: event.date || [],
+                    date: event.date || '',
                 }));
                 setEvents(eventsWithDates);
             });
@@ -81,7 +81,7 @@ function Events() {
                 <tr>
                     <th>ID</th>
                     <th>Titre</th>
-                    <th>Dates</th>
+                    <th>Date</th>
                     <th>Annulé</th>
                     <th>Raison</th>
                     <th>Actions</th>

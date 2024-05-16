@@ -1,4 +1,3 @@
-// src/components/__tests__/Events.test.js
 import React from 'react';
 import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 import Events from '../Events';
@@ -10,7 +9,7 @@ describe('Events Composant', () => {
 
     test('Rendu du composant et récupération des événements', async () => {
         global.fetch.mockResolvedValueOnce({
-            json: () => Promise.resolve([{ id: 1, title: 'Event 1', dates: ['2023-01-01'] }])
+            json: () => Promise.resolve([{ id: 1, titre: 'Event 1', date: '2023-01-01' }])
         });
 
         await act(async () => {
@@ -23,7 +22,7 @@ describe('Events Composant', () => {
     test("Suppression d'un évènement au clique du bouton", async () => {
         global.fetch
             .mockResolvedValueOnce({
-                json: () => Promise.resolve([{ id: 1, title: 'Event 1', dates: ['2023-01-01'] }])
+                json: () => Promise.resolve([{ id: 1, titre: 'Event 1', date: '2023-01-01' }])
             })
             .mockResolvedValueOnce({
                 json: () => Promise.resolve([])
@@ -45,10 +44,10 @@ describe('Events Composant', () => {
     test("Annule un évènement au clique du bouton d'annulation", async () => {
         global.fetch
             .mockResolvedValueOnce({
-                json: () => Promise.resolve([{ id: 1, title: 'Event 1', dates: ['2023-01-01'] }])
+                json: () => Promise.resolve([{ id: 1, titre: 'Event 1', date: '2023-01-01' }])
             })
             .mockResolvedValueOnce({
-                json: () => Promise.resolve({ id: 1, title: 'Event 1', dates: ['2023-01-01'], cancelled: true, reason: 'Reason' })
+                json: () => Promise.resolve({ id: 1, titre: 'Event 1', date: '2023-01-01', annulation: true, raison: 'Reason' })
             });
 
         await act(async () => {
@@ -63,7 +62,7 @@ describe('Events Composant', () => {
             target: { value: 'Reason' }
         });
 
-        fireEvent.click(screen.getAllByText('Annuler l\'Événement')[1]);
+        fireEvent.click(screen.getAllByText('Annuler l\'Événement')[1]); // Modification ici
 
         await waitFor(() => expect(screen.queryByText('Oui')).toBeInTheDocument());
         expect(screen.queryByText('Reason')).toBeInTheDocument();
@@ -71,11 +70,11 @@ describe('Events Composant', () => {
 
     test('Ouverture du formulaire de modification au clique du bouton', async () => {
         global.fetch.mockResolvedValueOnce({
-            json: () => Promise.resolve([{ id: 1, title: 'Event 1', dates: ['2023-01-01'] }])
+            json: () => Promise.resolve([{ id: 1, titre: 'Event 1', date: '2023-01-01' }])
         });
 
         global.fetch.mockResolvedValueOnce({
-            json: () => Promise.resolve({ id: 1, title: 'Event 1', dates: ['2023-01-01'], description: '', location: '', price: '' })
+            json: () => Promise.resolve({ id: 1, titre: 'Event 1', date: '2023-01-01', description: '', lieu: '', prix: '' })
         });
 
         await act(async () => {
@@ -95,10 +94,10 @@ describe('Events Composant', () => {
                 json: () => Promise.resolve([])
             })
             .mockResolvedValueOnce({
-                json: () => Promise.resolve({ id: 2, title: 'New Event', dates: ['2023-01-02'], description: '', location: '', price: '' })
+                json: () => Promise.resolve({ id: 2, titre: 'New Event', date: '2023-01-02', description: '', lieu: '', prix: '' })
             })
             .mockResolvedValueOnce({
-                json: () => Promise.resolve([{ id: 2, title: 'New Event', dates: ['2023-01-02'] }])
+                json: () => Promise.resolve([{ id: 2, titre: 'New Event', date: '2023-01-02' }])
             });
 
         await act(async () => {

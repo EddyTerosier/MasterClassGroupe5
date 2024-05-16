@@ -1,7 +1,5 @@
 <?php
 
-// src/Security/AppAuthenticator.php
-
 namespace App\Security;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -55,5 +53,3 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 }
-
-

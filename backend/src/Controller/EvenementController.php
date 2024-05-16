@@ -37,9 +37,8 @@ class EvenementController extends AbstractController
     {
         return $this->json($evenement, Response::HTTP_OK, [], ['groups' => 'evenement']);
     }
-
     #[Route('/create', name: 'evenement_create', methods: ['POST'])]
-    public function create(Request $request): JsonResponse
+    #[IsGranted("ROLE_ADMIN")]    public function create(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -94,6 +93,17 @@ class EvenementController extends AbstractController
         $data = json_decode($request->getContent(), true);
         $evenement->setAnnulation(true);
         $evenement->setRaison($data['reason'] ?? $evenement->getRaison());
+
+        $this->entityManager->flush();
+
+        return $this->json($evenement, Response::HTTP_OK, [], ['groups' => 'evenement']);
+    }
+
+    #[Route('/{id}/desannuler', name: 'evenement_desannuler', methods: ['PUT'])]
+    public function desannuler(Evenement $evenement): JsonResponse
+    {
+        $evenement->setAnnulation(false);
+        $evenement->setRaison(null);
 
         $this->entityManager->flush();
 

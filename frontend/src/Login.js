@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Login.css'; // Assurez-vous d'avoir un fichier LoginForm.css pour les styles
+import './Login.css';
 import axios from 'axios';
 
 function LoginForm() {
@@ -11,23 +11,17 @@ function LoginForm() {
     e.preventDefault();
 
     try {
-      // Effectuer la requête Axios vers votre API de connexion
-      const response = await axios.post('http://127.0.0.1:8000/login', {
+      const response = await axios.get('http://localhost:8000/login', {
         email: username,
         password: password
       });
-      alert(response.data);
 
-      // Vérifier la réponse de l'API et effectuer la redirection si la connexion est réussie
-      if (response.data === "Connecté") {
-        // Redirection vers une page de succès ou autre
-        window.location.href = '/Admin';
+      if (response.status === 200) {
+        window.location.href = '/Accueil';
       } else {
-        // Afficher un message d'erreur si la réponse de l'API indique un problème de connexion
         setError('Identifiants incorrects. Veuillez réessayer.');
       }
     } catch (error) {
-      // Gérer les erreurs éventuelles de la requête Axios
       setError('Une erreur s\'est produite. Veuillez réessayer plus tard.');
       console.error('Erreur lors de la connexion :', error);
     }
@@ -35,10 +29,11 @@ function LoginForm() {
 
   return (
     <div className="login-container">
-      <h2>Bienvenue</h2>
+      <label className='title'>Bienvenue</label>
+      {error && <div className="error-message">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="username">Nom d'utilisateur</label>
+          <label className='title2' htmlFor="username">Nom d'utilisateur</label>
           <input
             type="text"
             id="username"
@@ -48,7 +43,7 @@ function LoginForm() {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Mot de passe</label>
+          <label className='title2' htmlFor="password">Mot de passe</label>
           <input
             type="password"
             id="password"
@@ -57,7 +52,6 @@ function LoginForm() {
             required
           />
         </div>
-        {error && <p className="error-message">{error}</p>}
         <button type="submit">Se connecter</button>
       </form>
     </div>

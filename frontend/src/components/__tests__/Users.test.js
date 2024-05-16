@@ -3,7 +3,8 @@ import React from 'react';
 import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 import Users from '../Users';
 
-// Mock the UserForm component
+// On crée un mock du composant UserForm pour isoler les tests sur le composant Users.
+// Ce mock retourne un bouton qui simule l'ajout ou la mise à jour d'un utilisateur.
 jest.mock('../UserForm', () => ({ userId, onSave }) => (
     <div data-testid="user-form">
         <button onClick={() => onSave({ id: userId || 'new', email: 'test@example.com', roles: ['ROLE_USER'] })}>
@@ -13,13 +14,13 @@ jest.mock('../UserForm', () => ({ userId, onSave }) => (
 ));
 
 describe('Users Component', () => {
+    // Réinitialisation du fetch avant chaque test
     beforeEach(() => {
-        // Reset the fetch mock before each test
         global.fetch = jest.fn();
     });
 
     test('Récupère et affiche les utilisateurs', async () => {
-        // Mock fetch to return a list of users
+        // Simulation de la réponse du fetch
         global.fetch.mockResolvedValue({
             json: jest.fn().mockResolvedValue([{ id: 1, email: 'user@example.com', roles: ['ROLE_USER'] }]),
         });

@@ -27,11 +27,16 @@ function LoginForm() {
       console.log('Login response:', response);
 
       if (response.status === 200) {
-        window.location.href = '/Accueil';
+     
+        sessionStorage.setItem('Role',JSON.stringify(response.data.role));
+
+
+
       } else {
         setError('Identifiants incorrects. Veuillez réessayer.');
       }
     } catch (error) {
+      setError('Une erreur s\'est produite. Veuillez réessayer plus tard.');
       if (error.response) {
         console.error('Error response data:', error.response.data);
         console.error('Error response status:', error.response.status);

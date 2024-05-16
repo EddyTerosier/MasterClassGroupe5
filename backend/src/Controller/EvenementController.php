@@ -37,9 +37,8 @@ class EvenementController extends AbstractController
     {
         return $this->json($evenement, Response::HTTP_OK, [], ['groups' => 'evenement']);
     }
-
     #[Route('/create', name: 'evenement_create', methods: ['POST'])]
-    public function create(Request $request): JsonResponse
+    #[IsGranted("ROLE_ADMIN")]    public function create(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 

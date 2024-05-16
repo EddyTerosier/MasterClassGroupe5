@@ -13,13 +13,16 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
+use App\Repository\UserRepository;
 
 class AppAuthenticator extends AbstractLoginFormAuthenticator
 {
     public const LOGIN_ROUTE = 'app_login';
+    private UserRepository $userRepository;
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    public function __construct(private UrlGeneratorInterface $urlGenerator, UserRepository $userRepository)
     {
+        $this->userRepository = $userRepository;
     }
 
     public function authenticate(Request $request): Passport
@@ -40,7 +43,11 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?JsonResponse
     {
-        return new JsonResponse(['message' => 'Authentication successful'], JsonResponse::HTTP_OK);
+        // Obtenez le rôle de l'utilisateur authentifié
+        $role = $this->getRole($token);
+
+        // Retournez la réponse JSON avec le message et le rôle
+        return new JsonResponse(['message' => 'Authentication successful', 'role' => $role], JsonResponse::HTTP_OK);
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): JsonResponse
@@ -51,5 +58,24 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+    }
+
+    // Méthode pour obtenir le rôle de l'utilisateur à partir du jeton d'authentification
+    private function getRole(TokenInterface $token): string
+    {
+        // Récupérer l'utilisateur à partir du token
+        $user = $token->getUser();
+
+        // Assurez-vous que l'utilisateur est une instance de votre classe User
+        if (!$user instanceof \App\Entity\User) {
+            throw new \LogicException('Unable to get the role from the token.');
+        }
+
+        // Récupérer les rôles de l'utilisateur
+        $roles = $user->getRoles();
+
+        // Ici, nous supposons que l'utilisateur a un seul rôle
+        // Vous devrez adapter cette logique en fonction de la structure de vos rôles
+        return $roles[0];
     }
 }

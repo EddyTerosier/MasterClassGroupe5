@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import AdminDashboard from "./components/AdminDashboard"
 import PageAccueil from "./components/pageaccueil";
 import InscriptionForm from "./Inscription";
-
+import MyCalendar from "../src/components/Calendar"
 export default function App() {
 const [log, setLog] = useState(false);
 
@@ -22,6 +22,7 @@ const [log, setLog] = useState(false);
       <Route path="Accueil" element={<PageAccueil />} />
       <Route path="Login" element={<Login />} />
       <Route path="Inscription" element={<InscriptionForm />} />
+      <Route path="MyCalendar" element={<MyCalendar />} />
 
 
       </Route>

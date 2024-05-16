@@ -24,6 +24,7 @@ class UserController extends AbstractController
     #[Route("/signup", name:"signup", methods:["POST"])]
     public function signup(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
+        
         $requestData = json_decode($request->getContent(), true);
 
         $email = $requestData['email'] ?? null;

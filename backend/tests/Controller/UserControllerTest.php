@@ -12,7 +12,7 @@ class UserControllerTest extends WebTestCase
 
 
         $data = array(
-            'email' => "1",
+            'email' => "sss@gmail.com",
             'password' => "password"
         );
 
@@ -36,6 +36,3 @@ class UserControllerTest extends WebTestCase
 
     }
 }
-
-
-

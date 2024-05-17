@@ -38,9 +38,14 @@ class EvenementController extends AbstractController
         return $this->json($evenement, Response::HTTP_OK, [], ['groups' => 'evenement']);
     }
     #[Route('/create', name: 'evenement_create', methods: ['POST'])]
-    #[IsGranted("ROLE_ADMIN")]    public function create(Request $request): JsonResponse
+    #[IsGranted("ROLE_ADMIN")]    
+    public function create(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        
+        if (empty($data['titre']) || empty($data['description']) || empty($data['date']) || empty($data['prix']) || empty($data['lieu']) || empty($data['maximum'])) {
+            return $this->json(['message' => 'Données manquantes'], Response::HTTP_BAD_REQUEST);
+        }
 
         $evenement = new Evenement();
         $evenement->setTitre($data['titre'] ?? null);

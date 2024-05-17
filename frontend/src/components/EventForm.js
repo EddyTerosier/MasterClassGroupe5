@@ -9,21 +9,31 @@ function EventForm({ eventId, onSave }) {
     const [maximum, setMaximum] = useState('');
     const [cancelled, setCancelled] = useState(false);
     const [reason, setReason] = useState('');
+    const [isHidden, setIsHidden] = useState(false);
 
     useEffect(() => {
-        if (eventId) {
-            fetch(`http://localhost:8000/api/evenement/${eventId}`)
-                .then(response => response.json())
-                .then(data => {
-                    setTitle(data.titre);
-                    setDescription(data.description);
-                    setDates([data.date] || ['']);
-                    setLocation(data.lieu);
-                    setPrice(data.prix);
-                    setMaximum(data.maximum);
-                    setCancelled(data.annulation);
-                    setReason(data.raison);
-                });
+        const userRole = sessionStorage.getItem('Role');
+        if (userRole === "ROLE_USER" || !userRole) {
+            setIsHidden(true);
+        } else {
+            setIsHidden(false);
+            if (eventId) {
+                fetch(`http://localhost:8000/api/evenement/${eventId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        setTitle(data.titre);
+                        setDescription(data.description);
+                        setDates([data.date] || ['']);
+                        setLocation(data.lieu);
+                        setPrice(data.prix);
+                        setMaximum(data.maximum);
+                        setCancelled(data.annulation);
+                        setReason(data.raison);
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors de la récupération des données:', error);
+                    });
+            }
         }
     }, [eventId]);
 
@@ -61,6 +71,10 @@ function EventForm({ eventId, onSave }) {
         newDates.splice(index, 1);
         setDates(newDates);
     };
+
+    if (isHidden) {
+        return <div>Accès refusé</div>;
+    }
 
     return (
         <form onSubmit={handleSubmit} className="d-flex flex-column">

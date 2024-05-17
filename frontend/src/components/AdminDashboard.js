@@ -1,11 +1,27 @@
 // src/components/AdminDashboard.js
-import React from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import Users from './Users';
 import Events from './Events';
 import Tickets from './Tickets';
+import React, { useState, useEffect } from 'react';
+import Denied from './Denied';
 
 function AdminDashboard() {
+    const [isHidden, setIsHidden] = useState(false);
+
+    useEffect(() => {
+        const userRole = sessionStorage.getItem('Role');
+        if (userRole === "ROLE_USER" || !userRole) {
+            setIsHidden(true);
+        } else {
+            setIsHidden(false);
+        }
+    }, []);
+
+    if (isHidden) {
+        return <div><Denied/></div>;
+    }
+
     return (
         <div className="container mt-5">
             <Link className="nav-link" to="/admin">
@@ -19,7 +35,6 @@ function AdminDashboard() {
                     <li className="nav-item">
                         <Link className="nav-link" to="/admin/events">Gestion des Événements</Link>
                     </li>
-                  
                 </ul>
             </nav>
             <Routes>

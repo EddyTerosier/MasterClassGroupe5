@@ -45,8 +45,14 @@ function PageAccueil() {
     });
   };
   
+  const [isHidden, setIsHidden] = useState(false);
+
 
   const generateTicketPDF = (eventName, eventDate, eventLocation, eventDescription, eventTime, eventPrice, numTickets, eventId) => {
+    
+    const userRole = sessionStorage.getItem('Role');
+    if (userRole) {
+       
     const doc = new jsPDF();
     const formattedDate = new Date(eventDate).toLocaleDateString('fr-FR');
     const content = `
@@ -83,9 +89,13 @@ function PageAccueil() {
     .catch(error => {
       console.error('Erreur lors de la création du billet :', error);
     });
-  };
   
-
+    } else {
+        alert('connecter-vous d\' abord');
+      };
+    }
+    
+      
   return (
     <div className="page-accueil">
       <header>
@@ -101,6 +111,10 @@ function PageAccueil() {
                   <h3>{event.titre}</h3>
                   <p>Date : {new Date(event.date).toLocaleDateString()}</p>
                   <p>Lieu : {event.lieu}</p>
+                  {event.annulation ? (
+      <p>Événement annulé</p>
+    ) : null}
+
                   <p>Plus d'infos : <a href="#" onClick={() => toggleDetails(index)}>Détails</a></p>
                   {event.showDetails && (
                     <div className="details">
@@ -110,6 +124,7 @@ function PageAccueil() {
                     </div>
                   )}
                   <div className="reservation">
+                    
                     <button onClick={() => incrementTickets(index)}>Ajouter un billet</button>
                     <button onClick={() => decrementTickets(index)}>Retirer un billet</button>
                     <p>Nombre de billets : {event.tickets || 0}</p>

@@ -30,7 +30,9 @@ const Layout = () => {
   // Définissez votre fonction test pour gérer la déconnexion
   const handleLogout = () => {
     sessionStorage.removeItem('Role');
-    alert('Vous êtes déconnecter')
+    alert('Vous êtes déconnecter');
+    window.location.href = '/Accueil';
+
   };
 
   return (

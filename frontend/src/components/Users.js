@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import UserForm from './UserForm';
-
+import Denied from './Denied';
 function Users() {
     const [users, setUsers] = useState([]);
     const [selectedUserId, setSelectedUserId] = useState(null);
-
-    useEffect(() => {
+    const [isHidden, setIsHidden] = useState(false);
+  
+    useEffect(() => { const userRole = sessionStorage.getItem('Role');
+        if (userRole === "ROLE_USER" || !userRole) {
+            setIsHidden(true);
+        } else {
+            setIsHidden(false);}
         fetch('http://localhost:8000/users')
             .then(response => response.json())
             .then(data => setUsers(data));
@@ -22,7 +27,9 @@ function Users() {
             .then(response => response.json())
             .then(data => setUsers(data));
     };
-
+    if (isHidden) {
+        return <div>Accès refusé</div>;
+    }
     return (
         <div>
             <h2>Gestion des Utilisateurs</h2>

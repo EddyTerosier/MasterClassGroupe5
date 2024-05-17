@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Login.css';
+import { Route } from 'react-router-dom';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -29,8 +30,8 @@ function LoginForm() {
       if (response.status === 200) {
      
         sessionStorage.setItem('Role',JSON.stringify(response.data.role));
-
-
+        
+        window.location.href = '/Accueil';
 
       } else {
         setError('Identifiants incorrects. Veuillez réessayer.');

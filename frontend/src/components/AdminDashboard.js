@@ -40,7 +40,6 @@ function AdminDashboard() {
             <Routes>
                 <Route path="users" element={<Users />} />
                 <Route path="events" element={<Events />} />
-                <Route path="tickets" element={<Tickets />} />
             </Routes>
         </div>
     );

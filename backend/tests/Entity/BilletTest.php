@@ -11,11 +11,14 @@ class BilletTest extends TestCase
 {
     public function testGetSetEvenementId(): void
     {
+        // Crée une nouvelle instance de l'entité Billet.
         $billet = new Billet();
+        // rée une nouvelle instance de l'entité Evenement.
         $evenement = new Evenement();
 
+        // Définit un id evenement de test.
         $billet->setEvenementId($evenement);
-
+        // Vérifie que l'evenement id défini correspond à celui obtenu.
         $this->assertSame($evenement, $billet->getEvenementId());
     }
 

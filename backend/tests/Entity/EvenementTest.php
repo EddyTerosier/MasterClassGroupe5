@@ -10,11 +10,13 @@ class EvenementTest extends TestCase
 {
     public function testGetSetTitre(): void
     {
+        // Crée une nouvelle instance de l'entité Evenement.
         $evenement = new Evenement();
+        // Définit un titre de test.
         $titre = 'Concert de musique';
 
         $evenement->setTitre($titre);
-
+        // Vérifie que le titre défini correspond à celui obtenu.
         $this->assertSame($titre, $evenement->getTitre());
     }
 

@@ -39,6 +39,9 @@ function EventForm({ eventId, onSave }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (!title || !description || !location || !price || !maximum) {
+            return;
+        }
         const payload = { titre: title, description, date: dates[0], lieu: location, prix: price, maximum, annulation: cancelled, raison: reason };
         const method = eventId ? 'PUT' : 'POST';
         const url = eventId ? `http://localhost:8000/api/evenement/${eventId}/update` : 'http://localhost:8000/api/evenement/create';
@@ -53,6 +56,9 @@ function EventForm({ eventId, onSave }) {
             .then(response => response.json())
             .then(data => {
                 onSave(data);
+            })
+            .catch(error => {
+                console.error('Erreur lors de l\'enregistrement des données:', error);
             });
     };
 
@@ -103,7 +109,7 @@ function EventForm({ eventId, onSave }) {
                         />
                         {dates.length > 1 && (
                             <a type="button" className="btn btn-danger btn-sm ms-2"
-                                    onClick={() => removeDateField(index)}>
+                               onClick={() => removeDateField(index)}>
                                 Supprimer
                             </a>
                         )}
